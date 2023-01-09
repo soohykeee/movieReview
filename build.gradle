@@ -39,6 +39,7 @@ dependencies {
     implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
     implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.8'
     compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-java8time'
+    implementation group: 'net.coobird', name: 'thumbnailator', version: '0.4.1'
 }
 
 tasks.named('test') {
