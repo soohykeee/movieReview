@@ -36,10 +36,9 @@ public class UploadController {
 
     @PostMapping("/uploadAjax")
     public ResponseEntity<List<UploadResultDTO>> uploadFile(MultipartFile[] uploadFiles) {
-        List<UploadResultDTO> resultDTOList = null;
-        for (MultipartFile uploadFile : uploadFiles) {
+        List<UploadResultDTO> resultDTOList = new ArrayList<>();
 
-            resultDTOList = new ArrayList<>();
+        for (MultipartFile uploadFile : uploadFiles) {
 
             // 이미지 파일만 업로드 가능
             if (uploadFile.getContentType().startsWith("image") == false) {

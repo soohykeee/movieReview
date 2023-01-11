@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<th:block th:replace="~{/layout/basic :: setContent(~{this::content})}">
+<th:block th:replace="~{/layout/basic :: setContent(~{this::content} )}">
+
     <th:block th:fragment="content">
+
         <h1 class="mt-4">Movie Register Page</h1>
 
         <form th:action="@{/movie/register}" th:method="post"  >
@@ -201,6 +203,5 @@
         </script>
 
     </th:block>
-</th:block>
 
-</html>
+</th:block>

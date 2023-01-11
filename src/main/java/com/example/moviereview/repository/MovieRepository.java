@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface MovieRepository extends JpaRepository<Movie, Long> {
 
-    @Query("select m, min(mi.inum), min(mi.imgName), avg(coalesce(r.grade,0)), count(distinct r.reviewnum) " +
+    @Query("select m, min(mi.inum), min(mi.imgName), avg(coalesce(r.grade,0)), count(distinct r.reviewnum), m.regDate, mi.path, min(mi.uuid) " +
             "from Movie  m " +
             "left outer join MovieImage mi on mi.movie = m " +
             "left outer join Review r on r.movie = m " +
