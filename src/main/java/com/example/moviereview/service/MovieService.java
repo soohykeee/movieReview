@@ -13,11 +13,14 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public interface MovieService {
+
     Long register(MovieDTO movieDTO);
 
     PageResultDTO<MovieDTO, Object[]> getList(PageRequestDTO requestDTO);
 
-    default MovieDTO entitiesToDTO(Movie movie, List<MovieImage> movieImages, Double avg, Long reviewCnt) {
+    MovieDTO getMovie(Long mno);
+
+    default MovieDTO entitiesToDTO(Movie movie, List<MovieImage> movieImages, Double avg, Long reviewCnt){
         MovieDTO movieDTO = MovieDTO.builder()
                 .mno(movie.getMno())
                 .title(movie.getTitle())
@@ -26,8 +29,7 @@ public interface MovieService {
                 .build();
 
         List<MovieImageDTO> movieImageDTOList = movieImages.stream().map(movieImage -> {
-            return MovieImageDTO.builder()
-                    .imgName(movieImage.getImgName())
+            return MovieImageDTO.builder().imgName(movieImage.getImgName())
                     .path(movieImage.getPath())
                     .uuid(movieImage.getUuid())
                     .build();
@@ -38,6 +40,7 @@ public interface MovieService {
         movieDTO.setReviewCnt(reviewCnt.intValue());
 
         return movieDTO;
+
     }
 
     default Map<String, Object> dtoToEntity(MovieDTO movieDTO) {

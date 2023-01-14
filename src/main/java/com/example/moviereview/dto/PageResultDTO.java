@@ -9,39 +9,56 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-//DTO와 Entity 타입을 의미한다. 제네릭 타입으로 설정하여 다양한 곳에 이용할 수 있도록 한다.
 @Data
 public class PageResultDTO<DTO, EN> {
 
-    private List<DTO> dtoList;      //dto리스트
+    //DTO리스트
+    private List<DTO> dtoList;
 
-    private int totalPages;         //총 페이지 번호
+    //총 페이지 번호
+    private int totalPage;
 
-    private int page, size;         //현재 페이지 번호, 목록 사이즈
+    //현재 페이지 번호
+    private int page;
+    //목록 사이즈
+    private int size;
 
-    private int start, end;         //시작 페이지 번호, 끝 페이지 번호
+    //시작 페이지 번호, 끝 페이지 번호
+    private int start, end;
 
-    private boolean prev, next;     //이전, 다음
+    //이전, 다음
+    private boolean prev, next;
 
-    private List<Integer> pageList; //페이지 번호 목록록
+    //페이지 번호  목록
+    private List<Integer> pageList;
 
-    public PageResultDTO(Page<EN> result, Function<EN, DTO> fn) {
+    public PageResultDTO(Page<EN> result, Function<EN,DTO> fn ){
+
         dtoList = result.stream().map(fn).collect(Collectors.toList());
-        totalPages = result.getTotalPages();
+
+        totalPage = result.getTotalPages();
+
         makePageList(result.getPageable());
     }
 
-    private void makePageList(Pageable pageable) {
 
-        this.page = pageable.getPageNumber() + 1;
+    private void makePageList(Pageable pageable){
+
+        this.page = pageable.getPageNumber() + 1; // 0부터 시작하므로 1을 추가
         this.size = pageable.getPageSize();
 
-        int tempEnd = (int) (Math.ceil(page / 10.0)) * 10;
+        //temp end page
+        int tempEnd = (int)(Math.ceil(page/10.0)) * 10;
+
         start = tempEnd - 9;
+
         prev = start > 1;
-        end = totalPages > tempEnd ? tempEnd : totalPages;
-        next = totalPages > tempEnd;
-        pageList = IntStream.rangeClosed(start,end).boxed().collect(Collectors.toList());
+
+        end = totalPage > tempEnd ? tempEnd: totalPage;
+
+        next = totalPage > tempEnd;
+
+        pageList = IntStream.rangeClosed(start, end).boxed().collect(Collectors.toList());
 
     }
 

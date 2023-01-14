@@ -10,12 +10,19 @@ import java.util.List;
 
 public interface MovieRepository extends JpaRepository<Movie, Long> {
 
-    @Query("select m, min(mi.inum), min(mi.imgName), avg(coalesce(r.grade,0)), count(distinct r.reviewnum), m.regDate, mi.path, min(mi.uuid) " +
+    @Query("select m, mi, avg(coalesce(r.grade, 0)), count(distinct r) " +
+            "from Movie m " +
+            "left outer join MovieImage mi on mi.movie = m " +
+            "left outer join Review r on r.movie = m " +
+            "group by m, mi")
+    Page<Object[]> getListPage(Pageable pageable);
+
+    /*@Query("select m, min(mi.inum), min(mi.imgName), mi.path, min(mi.uuid), avg(coalesce(r.grade,0)), count(distinct r.reviewnum), m.regDate " +
             "from Movie  m " +
             "left outer join MovieImage mi on mi.movie = m " +
             "left outer join Review r on r.movie = m " +
-            "group by m.mno, m.title, m.regDate, m.modDate, mi.movie, r.movie")
-    Page<Object[]> getListPage(Pageable pageable);
+            "group by m.mno")
+    Page<Object[]> getListPage(Pageable pageable);*/
 
 
     // 특정 영화의 모든 이미지와 리뷰를 가져오는 쿼리
